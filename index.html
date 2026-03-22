@@ -1277,6 +1277,10 @@
         <label>Notes</label>
         <textarea id="book-notes" placeholder="What was interesting about this book?"></textarea>
       </div>
+      <div class="form-group">
+        <label>Where to get it <span style="color:var(--muted);font-weight:400">(optional — defaults to Amazon search)</span></label>
+        <input type="url" id="book-purchase-link" placeholder="https://..." />
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('edit-modal-overlay')">Cancel</button>
@@ -1648,6 +1652,7 @@
     document.getElementById('book-title').value = '';
     document.getElementById('book-author').value = '';
     document.getElementById('book-notes').value = '';
+    document.getElementById('book-purchase-link').value = '';
     document.getElementById('save-btn-text').textContent = 'Save';
     document.getElementById('save-btn').disabled = false;
     document.getElementById('suggestions').classList.remove('visible');
@@ -1670,6 +1675,7 @@
     document.getElementById('book-title').value = book.title || '';
     document.getElementById('book-author').value = book.author || '';
     document.getElementById('book-notes').value = book.notes || '';
+    document.getElementById('book-purchase-link').value = book.purchaseLink || '';
     document.getElementById('save-btn-text').textContent = 'Save Changes';
     document.getElementById('save-btn').disabled = false;
     document.getElementById('suggestions').classList.remove('visible');
@@ -1698,6 +1704,7 @@
     btn.disabled = true;
     btnText.innerHTML = '<span class="spinner"></span>';
 
+    const purchaseLink = document.getElementById('book-purchase-link').value.trim();
     const data = {
       title,
       author,
@@ -1705,6 +1712,7 @@
       status: selectedStatus,
       rating: selectedRating,
       notes,
+      purchaseLink,
       updatedAt: serverTimestamp()
     };
 
@@ -1817,7 +1825,8 @@
         coverUrl: book.coverUrl || '',
         status: book.status || 'reading',
         rating: book.rating || 0,
-        notes: book.notes || ''
+        notes: book.notes || '',
+        purchaseLink: book.purchaseLink || ''
       },
       sharerEmail: auth.currentUser.email
     });
@@ -1895,6 +1904,7 @@
           ${statusLabel(book.status)}
           <div class="share-book-stars">${starsHtml(book.rating || 0, '1.2rem')}</div>
           ${book.notes ? `<div class="share-book-notes">${escapeHtml(book.notes)}</div>` : ''}
+          <a href="${escapeHtml(book.purchaseLink || `https://www.amazon.com/s?k=${encodeURIComponent((book.title||'') + ' ' + (book.author||''))}`)}" target="_blank" rel="noopener noreferrer" class="share-link-open" style="margin-top:16px">Get it here →</a>
           <div class="share-footer">Track your own reading → <a href="${escapeHtml(window.location.pathname)}">books with friends</a></div>`;
       }
     } catch (err) {
