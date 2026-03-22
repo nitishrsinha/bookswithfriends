@@ -1641,6 +1641,8 @@
         data.createdAt = serverTimestamp();
         await addDoc(collection(db, 'users', currentUser.uid, 'books'), data);
       }
+      btn.disabled = false;
+      btnText.textContent = editingBookId ? 'Save Changes' : 'Save';
       closeModal('edit-modal-overlay');
       await loadBooks();
     } catch (err) {
