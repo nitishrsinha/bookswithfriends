@@ -1575,6 +1575,7 @@
     document.getElementById('book-author').value = '';
     document.getElementById('book-notes').value = '';
     document.getElementById('save-btn-text').textContent = 'Save';
+    document.getElementById('save-btn').disabled = false;
     document.getElementById('suggestions').classList.remove('visible');
     document.getElementById('suggestions').innerHTML = '';
     hideError('edit-error');
@@ -1596,6 +1597,7 @@
     document.getElementById('book-author').value = book.author || '';
     document.getElementById('book-notes').value = book.notes || '';
     document.getElementById('save-btn-text').textContent = 'Save Changes';
+    document.getElementById('save-btn').disabled = false;
     document.getElementById('suggestions').classList.remove('visible');
     document.getElementById('suggestions').innerHTML = '';
     hideError('edit-error');
