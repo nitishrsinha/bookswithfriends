@@ -1142,6 +1142,7 @@
     <span class="logo-text">books with friends</span>
     <div class="header-right">
       <span class="user-email" id="header-email"></span>
+      <button class="btn-logout" onclick="openModal('about-modal-overlay')">About</button>
       <button class="btn-logout" onclick="handleLogout()">Logout</button>
     </div>
   </header>
@@ -2239,5 +2240,22 @@
   window.generateShareLink = generateShareLink;
   window.generateLinkShareLink = generateLinkShareLink;
 </script>
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="about-modal-overlay" onclick="overlayClick(event, 'about-modal-overlay')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h2>About</h2>
+      <button class="modal-close" onclick="closeModal('about-modal-overlay')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:28px 24px;line-height:1.8;color:var(--muted)">
+      <p style="font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:14px">books with friends</p>
+      <p style="margin-bottom:16px">A private reading journal for curious minds.</p>
+      <p style="margin-bottom:16px">Log the books you've read, the ones you're still working through, and the ones you gave up on — no shame. Add notes, rate your reads, and save articles and links that sparked something in you.</p>
+      <p style="margin-bottom:24px">Your library is yours alone — private by default. But when a book moves you, share it with a friend through a one-time link, just for them.</p>
+      <p style="font-size:0.8rem;color:var(--border)">Made with curiosity.</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
