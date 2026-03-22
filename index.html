@@ -1174,6 +1174,12 @@
     <button class="btn btn-primary" id="auth-submit-btn" onclick="handleAuth()">
       <span id="auth-btn-text">Login</span>
     </button>
+    <div style="text-align:center;margin-top:8px">
+      <a href="#" id="forgot-password-link" onclick="handleForgotPassword();return false;"
+        style="color:var(--muted);font-size:0.85rem;text-decoration:none">
+        Forgot password?
+      </a>
+    </div>
     <div style="display:flex;align-items:center;gap:10px;margin:8px 0">
       <div style="flex:1;height:1px;background:var(--border)"></div>
       <span style="color:var(--muted);font-size:0.8rem">or</span>
@@ -1362,7 +1368,8 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
   import {
     getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-    signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup
+    signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup,
+    sendPasswordResetEmail
   } from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
   import {
     getFirestore, collection, doc, addDoc, getDoc, getDocs,
@@ -1570,6 +1577,21 @@
   document.getElementById('auth-password').addEventListener('keydown', e => {
     if (e.key === 'Enter') window.handleAuth();
   });
+
+  window.handleForgotPassword = async function() {
+    const email = document.getElementById('auth-email').value.trim();
+    if (!email) {
+      showError('auth-error', 'Please enter your email address first.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showError('auth-error', '✅ Password reset email sent! Check your inbox.');
+      document.getElementById('auth-error').style.color = 'var(--green)';
+    } catch (err) {
+      showError('auth-error', 'Could not send reset email: ' + err.message);
+    }
+  };
 
   window.handleGoogleSignIn = async function() {
     const btn = document.getElementById('google-signin-btn');
