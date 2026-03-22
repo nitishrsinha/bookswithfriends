@@ -1970,6 +1970,7 @@
     document.getElementById('link-title').value = '';
     document.getElementById('link-notes').value = '';
     document.getElementById('link-save-btn-text').textContent = 'Save';
+    document.getElementById('link-save-btn').disabled = false;
     document.getElementById('link-fetch-status').textContent = '';
     document.getElementById('link-fetch-spinner').style.display = 'none';
     hideError('link-edit-error');
@@ -1988,6 +1989,7 @@
     document.getElementById('link-title').value = link.title || '';
     document.getElementById('link-notes').value = link.notes || '';
     document.getElementById('link-save-btn-text').textContent = 'Save Changes';
+    document.getElementById('link-save-btn').disabled = false;
     document.getElementById('link-fetch-status').textContent = '';
     document.getElementById('link-fetch-spinner').style.display = 'none';
     hideError('link-edit-error');
@@ -2091,6 +2093,8 @@
         data.createdAt = serverTimestamp();
         await addDoc(collection(db, 'users', currentUser.uid, 'links'), data);
       }
+      btn.disabled = false;
+      btnText.textContent = editingLinkId ? 'Save Changes' : 'Save';
       closeModal('link-edit-modal-overlay');
       await loadLinks();
     } catch (err) {
