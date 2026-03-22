@@ -190,6 +190,23 @@
 
     .error-msg.visible { display: block; }
 
+    .terms-label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      cursor: pointer;
+      font-size: 12px;
+      color: #999;
+      line-height: 1.5;
+    }
+    .terms-label input[type="checkbox"] {
+      margin-top: 3px;
+      flex-shrink: 0;
+      accent-color: #c8a96e;
+      width: 15px;
+      height: 15px;
+    }
+
     /* ─── APP VIEW ───────────────────────────────────────── */
     #app-view { min-height: 100vh; }
 
@@ -1130,6 +1147,12 @@
       <label>Password</label>
       <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" />
     </div>
+    <div class="form-group" id="terms-group" style="display:none;">
+      <label class="terms-label">
+        <input type="checkbox" id="terms-checkbox" onchange="updateAuthBtn()" />
+        <span>I have read and agree to the <a href="#" onclick="openModal('terms-modal-overlay');return false;" style="color:var(--accent)">Terms of Usage</a>.</span>
+      </label>
+    </div>
     <button class="btn btn-primary" id="auth-submit-btn" onclick="handleAuth()">
       <span id="auth-btn-text">Login</span>
     </button>
@@ -1471,7 +1494,16 @@
     document.getElementById('tab-register').classList.toggle('active', tab === 'register');
     document.getElementById('auth-btn-text').textContent = tab === 'login' ? 'Login' : 'Create Account';
     document.getElementById('auth-submit-btn').dataset.mode = tab;
+    document.getElementById('terms-group').style.display = tab === 'register' ? 'block' : 'none';
+    document.getElementById('terms-checkbox').checked = false;
+    updateAuthBtn();
     hideError('auth-error');
+  };
+
+  window.updateAuthBtn = function() {
+    const mode = document.getElementById('auth-submit-btn').dataset.mode;
+    const checked = document.getElementById('terms-checkbox').checked;
+    document.getElementById('auth-submit-btn').disabled = (mode === 'register' && !checked);
   };
   document.getElementById('auth-submit-btn').dataset.mode = 'login';
 
@@ -2240,6 +2272,21 @@
   window.generateShareLink = generateShareLink;
   window.generateLinkShareLink = generateLinkShareLink;
 </script>
+<!-- TERMS MODAL -->
+<div class="modal-overlay" id="terms-modal-overlay" onclick="overlayClick(event, 'terms-modal-overlay')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h2>Terms of Usage</h2>
+      <button class="modal-close" onclick="closeModal('terms-modal-overlay')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:28px 24px;line-height:1.8;color:var(--muted)">
+      <p style="margin-bottom:16px">By using <strong style="color:var(--text)">books with friends</strong>, you agree not to save or share illegal content.</p>
+      <p style="margin-bottom:16px">Your data is stored securely on Firebase — as the app developer, the owner has technical access to the database. The developer has no intention of reading your entries, but you should know that once written, nothing on the internet is truly private.</p>
+      <p style="font-size:0.85rem;color:var(--border)">Last updated: March 2026</p>
+    </div>
+  </div>
+</div>
+
 <!-- ABOUT MODAL -->
 <div class="modal-overlay" id="about-modal-overlay" onclick="overlayClick(event, 'about-modal-overlay')">
   <div class="modal" style="max-width:480px">
@@ -2257,5 +2304,8 @@
   </div>
 </div>
 
+<footer style="text-align:center;padding:16px;font-size:0.75rem;color:var(--border)">
+  <a href="#" onclick="openModal('terms-modal-overlay');return false;" style="color:var(--muted);text-decoration:none;">Terms of Usage</a>
+</footer>
 </body>
 </html>
